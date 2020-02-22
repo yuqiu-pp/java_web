@@ -5,6 +5,7 @@ import com.smart4j.framework.annotation.Controller;
 import com.smart4j.framework.annotation.Service;
 import com.smart4j.framework.util.ClassUtil;
 
+import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,4 +65,37 @@ public final class ClassHelper {
         return set;
     }
 
+    /**
+     * 获取应用包名下某父类(或接口)的所有子类
+     *
+     * 应用场景：扩展AspectProxy抽象类的所有具体类
+     */
+     public static Set<Class<?>> getClassSetBySuper(Class<?> superClass){
+         Set<Class<?>> classSet = new HashSet<>();
+
+         for (Class<?> cls : CLASS_SET){
+             // A.isAssignableFrom(B)  A所代表的类 是否为B所代表的类，或者B所代表的类的super类
+             // 后一个条件排除掉相同类，所以这里只取了super类
+             if (superClass.isAssignableFrom(cls) && !superClass.equals(cls)){
+                 classSet.add(cls);
+             }
+         }
+         return classSet;
+     }
+
+    /**
+     * 获取应用包名下带有某注解的所有类
+     * 例如：@Aspect(Controller.class)中的Annotation
+     * 应用场景：获取带有Aspect注解的所有类
+     */
+    public static Set<Class<?>> getClassSetByAnnotation(Class<? extends Annotation> annotationClass){
+        Set<Class<?>> classSet = new HashSet<>();
+
+        for (Class<?> cls : CLASS_SET){
+            if (cls.isAnnotationPresent(annotationClass)){
+                classSet.add(cls);
+            }
+        }
+        return classSet;
+    }
 }
