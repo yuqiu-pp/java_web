@@ -121,8 +121,8 @@ public final class ClassUtil {
                 }
                 String subPackageName = fileName;
                 if (StringUtil.isEmpty(packagePath)) {
-                    subPackageName = packagePath + "." + subPackageName;
                     {
+                        subPackageName = packagePath + "." + subPackageName;
                     }
                     addClass(classSet, subPackagePath, subPackageName);
                 }
